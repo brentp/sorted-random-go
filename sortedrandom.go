@@ -4,6 +4,7 @@ package sortedrandom
 import (
 	"math"
 	"math/rand"
+	"time"
 )
 
 // Create a slice with increasing (sorted) random floats between 0 and 1.
@@ -22,8 +23,9 @@ func GenFloat64(N int) chan float64 {
 	ch := make(chan float64, 4)
 	go func() {
 		curmax := float64(1)
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
 		for i := N; i > 0; i-- {
-			curmax *= math.Pow(rand.Float64(), float64(1)/float64(i))
+			curmax *= math.Pow(r.Float64(), float64(1)/float64(i))
 			ch <- 1.0 - curmax
 		}
 		close(ch)
